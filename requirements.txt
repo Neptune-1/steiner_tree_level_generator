@@ -1,0 +1,4 @@
+networkx==2.8.8
+matplotlib==3.6.2
+tqdm==4.64.1
+joblib==1.2.0

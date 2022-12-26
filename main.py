@@ -38,13 +38,13 @@ if __name__ == "__main__":
         grid += [(y, x) for (x, y) in grid]
         grid += [(x, x) for x in range(max(size))]
 
-        for _ in range(1):
+        for _ in range(80):
             terminals = tuple(get_points(grid.copy(), randint(8, 10)))
             steiner_tree = SteinerTree(terminals)
             steiner_tree.start()
             complexity = steiner_tree.complexity()
             solution = steiner_tree.manhattan_solution(show=False)
-            if complexity[2] < ideal_complexity * 500:
+            if complexity[2] < ideal_complexity * 4:
                 print(complexity)
                 print("POINTS:")
                 print([[x, y] for (x, y) in terminals])
