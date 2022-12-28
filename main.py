@@ -23,7 +23,8 @@ def get_points(grid, n):
     return points
 
 
-if __name__ == "__main__":
+def run(field_size):
+    print("START")
     terminals = ((2, 3), (1, 9), (3, 5), (4, 1), (5, 4), (6, 5), (7, 9), (10, 2), (10, 8))
     steiner_tree = SteinerTree(terminals)
     steiner_tree.start()
@@ -32,26 +33,25 @@ if __name__ == "__main__":
     print("IDEAL:", ideal_complexity)
 
     data = []
-    for ds in range(3):
-        size = (9+ds, 9+ds)
-        grid = list(itertools.combinations(range(max(size)), 2))
-        grid += [(y, x) for (x, y) in grid]
-        grid += [(x, x) for x in range(max(size))]
+    size = field_size
+    grid = list(itertools.combinations(range(max(size)), 2))
+    grid += [(y, x) for (x, y) in grid]
+    grid += [(x, x) for x in range(max(size))]
 
-        for _ in range(80):
-            terminals = tuple(get_points(grid.copy(), randint(8, 10)))
-            steiner_tree = SteinerTree(terminals)
-            steiner_tree.start()
-            complexity = steiner_tree.complexity()
-            solution = steiner_tree.manhattan_solution(show=False)
-            if complexity[2] < ideal_complexity * 4:
-                print(complexity)
-                print("POINTS:")
-                print([[x, y] for (x, y) in terminals])
-                print("SOLUTION:")
-                print(solution)
-                data.append([[[x, y] for (x, y) in terminals], int(complexity[0]), solution, 9+ds, complexity[2]])
-            print("_______________________________________________________")
+    for _ in range(50):
+        terminals = tuple(get_points(grid.copy(), randint(8, 10)))
+        steiner_tree = SteinerTree(terminals)
+        steiner_tree.start()
+        complexity = steiner_tree.complexity()
+        solution = steiner_tree.manhattan_solution(show=False)
+        if complexity[2] < ideal_complexity * 4:
+            print(complexity)
+            print("POINTS:")
+            print([[x, y] for (x, y) in terminals])
+            print("SOLUTION:")
+            print(solution)
+            data.append([[[x, y] for (x, y) in terminals], int(complexity[0]), solution, size[0], complexity[2]])
+        print("_______________________________________________________")
 
     with open("tree.dart", "w") as f:
         data.sort(key=lambda x: x[4], reverse=True)

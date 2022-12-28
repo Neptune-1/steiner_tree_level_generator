@@ -74,9 +74,9 @@ class SteinerTree:
         global_results = []
 
         for steiner_n in range(max_steiner_n):
-            results = Parallel(n_jobs=-2)(
+            results = Parallel(n_jobs=-1)(
                 delayed(self.calculate_weight)(combinations) for combinations in
-                tqdm(list(itertools.combinations(self.grid_none_points, steiner_n))))
+                list(itertools.combinations(self.grid_none_points, steiner_n)))
             global_results += results
 
         self.statistic = Counter((weight for weight, tree in global_results))
